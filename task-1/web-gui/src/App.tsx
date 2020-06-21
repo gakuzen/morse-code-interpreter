@@ -1,25 +1,28 @@
 import React from "react";
+import io from "socket.io-client";
+
 import logo from "./logo.svg";
 import "./App.css";
+import MorseCodeInterpreter from "./components/MorseCodeInterpreter";
 
 function App() {
+  const socket = io("http://localhost:3000");
+
+  socket.on("connect", (data: any) => {
+    console.log("connect");
+  });
+
+  socket.on("disconnect", (data: any) => {
+    console.log("disconnect");
+  });
+
+  socket.on("morse/output", (data: any) => {
+    console.log("morse/output", data);
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        Leo
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <MorseCodeInterpreter socket={socket}></MorseCodeInterpreter>
     </div>
   );
 }
