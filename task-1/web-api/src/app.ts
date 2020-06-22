@@ -8,6 +8,7 @@ import path from "path";
 import passport from "passport";
 import bluebird from "bluebird";
 import { SESSION_SECRET } from "./util/secrets";
+import config from "./config";
 
 // Controllers (route handlers)
 import * as homeController from "./controllers/home";
@@ -17,7 +18,7 @@ import * as apiController from "./controllers/api";
 const app = express();
 
 // Express configuration
-app.set("port", process.env.PORT || 3000);
+app.set("port", config.port || 3000);
 app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
