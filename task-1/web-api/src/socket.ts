@@ -1,8 +1,9 @@
 import { morseCodeMap } from "./constants";
+import logger from "./util/logger";
 
 const setup = (io: any) => {
   io.on("connection", (socket: any) => {
-    console.log(`${socket.id} connected`);
+    logger.debug(`${socket.id} connected`);
 
     let inputStream: string = "";
 
@@ -26,7 +27,7 @@ const setup = (io: any) => {
     });
 
     socket.on("disconnect", () => {
-      console.log(`${socket.id} disconnected`);
+      logger.debug(`${socket.id} disconnected`);
     });
   });
 };

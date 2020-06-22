@@ -12,19 +12,19 @@ interface IConfigs {
 const configs: IConfigs = {
   local: {
     env: "local",
-    port: 3000,
+    port: parseInt(process.env.PORT) || 3000,
   },
   development: {
     env: "development",
-    port: 3000,
+    port: parseInt(process.env.PORT) || 3000,
   },
   staging: {
     env: "staging",
-    port: 3000,
+    port: parseInt(process.env.PORT) || 3000,
   },
   production: {
     env: "production",
-    port: 3000,
+    port: parseInt(process.env.PORT) || 3000,
   },
 };
 
