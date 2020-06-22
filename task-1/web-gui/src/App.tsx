@@ -1,28 +1,39 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
 
 import logo from "./logo.svg";
 import "./App.css";
 import MorseCodeInterpreter from "./components/MorseCodeInterpreter";
+import config from "./config";
 
 function App() {
-  const socket = io("http://localhost:3000");
+  const [isSocketConnected, setIsSocketConnected] = useState(false);
+  const [socket, setSocket] = useState<any>();
 
-  socket.on("connect", (data: any) => {
-    console.log("connect");
-  });
+  useEffect(() => {
+    const socketIO = io(config.socketUrl);
 
-  socket.on("disconnect", (data: any) => {
-    console.log("disconnect");
-  });
+    socketIO.on("connect", (data: any) => {
+      setIsSocketConnected(true);
+    });
 
-  socket.on("morse/output", (data: any) => {
-    console.log("morse/output", data);
-  });
+    socketIO.on("disconnect", (data: any) => {
+      setIsSocketConnected(false);
+    });
+
+    setSocket(socketIO);
+
+    return () => {
+      socketIO.disconnect();
+    };
+  }, []);
 
   return (
     <div>
-      <MorseCodeInterpreter socket={socket}></MorseCodeInterpreter>
+      <MorseCodeInterpreter
+        isSocketConnected={isSocketConnected}
+        socket={socket}
+      ></MorseCodeInterpreter>
     </div>
   );
 }

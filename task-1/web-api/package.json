@@ -66,7 +66,6 @@
     "@types/jquery": "^3.3.31",
     "@types/lodash": "^4.14.141",
     "@types/lusca": "^1.6.1",
-    "@types/mocha": "^7.0.2",
     "@types/mongoose": "^5.5.18",
     "@types/node": "^12.7.8",
     "@types/node-sass": "^4.11.0",
