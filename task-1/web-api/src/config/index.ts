@@ -14,6 +14,10 @@ const configs: IConfigs = {
     env: "local",
     port: parseInt(process.env.PORT) || 3000,
   },
+  test: {
+    env: "test",
+    port: parseInt(process.env.PORT) || 3000,
+  },
   development: {
     env: "development",
     port: parseInt(process.env.PORT) || 3000,

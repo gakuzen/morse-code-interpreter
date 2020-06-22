@@ -78,6 +78,7 @@
     "@types/request-promise": "^4.1.44",
     "@types/shelljs": "^0.8.5",
     "@types/socket.io": "^2.1.8",
+    "@types/socket.io-client": "^1.4.33",
     "@types/supertest": "^2.0.8",
     "@types/winston": "^2.4.4",
     "@typescript-eslint/eslint-plugin": "^2.3.1",
