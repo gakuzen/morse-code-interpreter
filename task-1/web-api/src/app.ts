@@ -4,9 +4,7 @@ import session from "express-session";
 import bodyParser from "body-parser";
 import lusca from "lusca";
 import flash from "express-flash";
-import path from "path";
 import passport from "passport";
-import bluebird from "bluebird";
 import { SESSION_SECRET } from "./util/secrets";
 import config from "./config";
 
@@ -36,21 +34,6 @@ app.use(lusca.xframe("SAMEORIGIN"));
 app.use(lusca.xssProtection(true));
 app.use((req, res, next) => {
   res.locals.user = req.user;
-  next();
-});
-app.use((req, res, next) => {
-  // After successful login, redirect back to the intended page
-  if (
-    !req.user &&
-    req.path !== "/login" &&
-    req.path !== "/signup" &&
-    !req.path.match(/^\/auth/) &&
-    !req.path.match(/\./)
-  ) {
-    req.session.returnTo = req.path;
-  } else if (req.user && req.path == "/account") {
-    req.session.returnTo = req.path;
-  }
   next();
 });
 
