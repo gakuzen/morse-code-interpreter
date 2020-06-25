@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
 
-import logo from "./logo.svg";
 import "./App.css";
 import MorseCodeInterpreter from "./components/MorseCodeInterpreter";
 import config from "./config";
 
-function App() {
+const App = () => {
   const [isSocketConnected, setIsSocketConnected] = useState(false);
   const [socket, setSocket] = useState<any>();
 
@@ -36,6 +35,6 @@ function App() {
       ></MorseCodeInterpreter>
     </div>
   );
-}
+};
 
 export default App;

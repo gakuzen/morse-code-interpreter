@@ -20,9 +20,9 @@ const configs: IConfigs = {
   },
   test: {
     env: "test",
-    socketUrl: "",
-    apiUrl: "",
-    authApiUrl: "",
+    socketUrl: "http://localhost:3000",
+    apiUrl: "http://localhost:3000/api",
+    authApiUrl: "http://localhost:3000/auth",
   },
   production: {
     env: "production",

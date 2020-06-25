@@ -17,7 +17,7 @@ describe("Socket unit tests", function () {
 
   afterAll(function (done) {
     // Cleanup
-    if (socket.connected) {
+    if (socket) {
       socket.disconnect();
     }
     done();

@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 
 export default function usePress(
-  callback = (idleAfterPress: boolean, ms?: number) => {},
-  idleMsThreshold: number = 1500
+  onPressRelease: (ms: number) => void,
+  onIdle: () => void,
+  idleThresholdInMs: number
 ) {
   const [startPress, setStartPress] = useState<boolean>(false);
   const [lastPressStart, setLastPressStart] = useState<Date>();
@@ -13,21 +14,22 @@ export default function usePress(
     if (startPress) {
       clearTimeout(idleTimerId);
     } else {
-      const pressedDuration =
-        new Date().getTime() - (lastPressStart || new Date()).getTime();
-      callback(false, pressedDuration);
-
       if (lastPressStart) {
+        const pressedDuration: number =
+          new Date().getTime() - lastPressStart.getTime();
+
+        onPressRelease(pressedDuration);
+
         idleTimerId = setTimeout(() => {
-          callback(true);
-        }, idleMsThreshold);
+          onIdle();
+        }, idleThresholdInMs);
       }
     }
 
     return () => {
       clearTimeout(idleTimerId);
     };
-  }, [startPress]);
+  }, [startPress, lastPressStart]);
 
   const start = useCallback(() => {
     setStartPress(true);

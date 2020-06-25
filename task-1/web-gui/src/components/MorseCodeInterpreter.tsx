@@ -9,9 +9,9 @@ const MorseCodeInterpreter = (props: any) => {
   const [input, setInput] = useState<string>("");
   const [interpretation, setInterpretation] = useState<string>("");
 
-  const longPressMsThreshold = 1500;
-  const shortPressMsThreshold = 1000;
-  const idleMsThreshold = 1500;
+  const longPressThresholdInMs = 1500;
+  const shortPressThresholdInMs = 1000;
+  const idleThresholdInMs = 1500;
 
   useEffect(() => {
     const topic = "morse/output";
@@ -32,19 +32,21 @@ const MorseCodeInterpreter = (props: any) => {
     };
   }, [socket]);
 
-  const buttonPress = usePress((idleAfterPress: boolean, ms?: number) => {
-    if (ms) {
-      if (ms > longPressMsThreshold) {
+  const buttonPress = usePress(
+    (ms: number) => {
+      if (ms > longPressThresholdInMs) {
         setInput(input + "-");
         socket.emit("morse/input", "-");
-      } else if (ms < shortPressMsThreshold) {
+      } else if (ms < shortPressThresholdInMs) {
         setInput(input + ".");
         socket.emit("morse/input", ".");
       }
-    } else if (idleAfterPress) {
+    },
+    () => {
       socket.emit("morse/input", "");
-    }
-  }, idleMsThreshold);
+    },
+    idleThresholdInMs
+  );
 
   return (
     <div>
