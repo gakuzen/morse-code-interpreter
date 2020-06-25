@@ -40,7 +40,7 @@ describe("should render Morse code interpreter", () => {
     const shortPressThresholdInMs = 1000;
     const idleThresholdInMs = 1500;
 
-    let socketIO: any;
+    let socketIO: SocketIOClient.Socket;
     let isSocketConnected: boolean;
 
     beforeAll(function (done) {

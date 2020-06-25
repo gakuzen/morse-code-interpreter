@@ -9,10 +9,12 @@ export default function usePress(
   const [lastPressStart, setLastPressStart] = useState<Date>();
 
   useEffect(() => {
-    let idleTimerId: any;
+    let idleTimerId: NodeJS.Timeout | undefined;
 
     if (startPress) {
-      clearTimeout(idleTimerId);
+      if (idleTimerId) {
+        clearTimeout(idleTimerId);
+      }
     } else {
       if (lastPressStart) {
         const pressedDuration: number =
@@ -27,7 +29,9 @@ export default function usePress(
     }
 
     return () => {
-      clearTimeout(idleTimerId);
+      if (idleTimerId) {
+        clearTimeout(idleTimerId);
+      }
     };
   }, [startPress, lastPressStart]);
 

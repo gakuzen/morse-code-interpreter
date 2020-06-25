@@ -1,13 +1,13 @@
 import { morseCodeMap } from "./constants";
 import logger from "./util/logger";
 
-const setup = (io: any) => {
-  io.on("connection", (socket: any) => {
+const setup = (io: SocketIO.Server) => {
+  io.on("connection", (socket: SocketIO.Socket) => {
     logger.debug(`${socket.id} connected`);
 
     let inputStream: string = "";
 
-    socket.on("morse/input", (data: any) => {
+    socket.on("morse/input", (data: string) => {
       switch (data) {
         case "-": {
           inputStream += data;

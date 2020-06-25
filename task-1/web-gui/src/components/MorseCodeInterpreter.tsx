@@ -3,7 +3,12 @@ import React, { useState, useEffect, useCallback } from "react";
 import "./MorseCodeInterpreter.css";
 import usePress from "../hooks/usePress";
 
-const MorseCodeInterpreter = (props: any) => {
+export interface MorseCodeInterpreterProps {
+  isSocketConnected: boolean;
+  socket: SocketIOClient.Socket;
+}
+
+const MorseCodeInterpreter = (props: MorseCodeInterpreterProps) => {
   const { isSocketConnected, socket } = props;
 
   const [input, setInput] = useState<string>("");

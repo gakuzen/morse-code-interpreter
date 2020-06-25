@@ -12,11 +12,11 @@ const App = () => {
   useEffect(() => {
     const socketIO = io(config.socketUrl);
 
-    socketIO.on("connect", (data: any) => {
+    socketIO.on("connect", () => {
       setIsSocketConnected(true);
     });
 
-    socketIO.on("disconnect", (data: any) => {
+    socketIO.on("disconnect", () => {
       setIsSocketConnected(false);
     });
 

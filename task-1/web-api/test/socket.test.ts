@@ -4,7 +4,7 @@ import config from "../src/config";
 import { morseCodeMap } from "../src/constants";
 
 describe("Socket unit tests", function () {
-  let socket: any;
+  let socket: SocketIOClient.Socket;
 
   beforeAll(function (done) {
     // Setup
