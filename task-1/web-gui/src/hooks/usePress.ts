@@ -47,7 +47,5 @@ export default function usePress(
     onMouseDown: start,
     onMouseUp: stop,
     onMouseLeave: stop,
-    onTouchStart: start,
-    onTouchEnd: stop,
   };
 }
