@@ -25,7 +25,7 @@ const MorseCodeInterpreter = (props: MorseCodeInterpreterProps) => {
       socket.on(topic, (data: string) => {
         setInput("");
         if (data) {
-          setInterpretation((i) => i + data);
+          setInterpretation((interpretation) => interpretation + data);
         }
       });
     }
@@ -37,21 +37,24 @@ const MorseCodeInterpreter = (props: MorseCodeInterpreterProps) => {
     };
   }, [socket]);
 
-  const buttonPress = usePress(
+  const onPressRelease = useCallback(
     (ms: number) => {
       if (ms > longPressThresholdInMs) {
-        setInput(input + "-");
+        setInput((input) => input + "-");
         socket.emit("morse/input", "-");
       } else if (ms < shortPressThresholdInMs) {
-        setInput(input + ".");
+        setInput((input) => input + ".");
         socket.emit("morse/input", ".");
       }
     },
-    () => {
-      socket.emit("morse/input", "");
-    },
-    idleThresholdInMs
+    [socket]
   );
+
+  const onIdle = useCallback(() => {
+    socket.emit("morse/input", "");
+  }, [socket]);
+
+  const buttonPress = usePress(onPressRelease, onIdle, idleThresholdInMs);
 
   return (
     <div>

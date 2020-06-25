@@ -33,7 +33,7 @@ export default function usePress(
         clearTimeout(idleTimerId);
       }
     };
-  }, [startPress, lastPressStart]);
+  }, [startPress, lastPressStart, onPressRelease, onIdle, idleThresholdInMs]);
 
   const start = useCallback(() => {
     setStartPress(true);
