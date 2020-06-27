@@ -8,11 +8,11 @@ Interprets Morse code in real-time
 
 ### Backend
 
-Run `npm run watch` at `web-api/`.
+Run `npm run watch` in `web-api/`.
 
 ### Frontend
 
-Run `npm start` at `web-gui/`.
+Run `npm start` in `web-gui/`.
 
 ## How to use locally
 
@@ -22,11 +22,11 @@ After starting both backend and frontend locally, open http://localhost:3001 to 
 
 ### Backend
 
-Run `npm run watch-test` at `web-api/`.
+Run `npm run watch-test` in `web-api/`.
 
 ### Frontend
 
-Run `npm run test` at `web-gui/`.
+Run `npm run test` in `web-gui/`.
 
 ## Libraries used for core functionalities
 
