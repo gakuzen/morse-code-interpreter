@@ -1,7 +1,9 @@
 # Morse code interpreter
 
-Interprets Morse code in real-time
+Interprets Morse code in real-time.
 
+- Morse code encoding is hidden in backend
+- Real-time WebSocket communication between frontend and backend
 - supports English letters only at the moment ([ITU morse code table](http://www.mdarc.org/_/rsrc/1519670493939/resources/operating-aids/morse-code/Morse%20Code06.jpg?height=279&width=400))
 
 ## How to run locally
@@ -27,6 +29,12 @@ Run `npm run watch-test` in `web-api/`.
 ### Frontend
 
 Run `npm run test` in `web-gui/`.
+
+## User interaction
+
+- `dash (-)`: press longer than 1500 ms
+- `dot (.)`: press shorter than 1000 ms
+- `empty`: idle for 1500 ms after a press
 
 ## Libraries used for core functionalities
 
