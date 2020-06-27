@@ -35,10 +35,10 @@ Run `npm run test` in `web-gui/`.
 - `express` (HTTP server)
 - `socket.io` (real-time WebSocket server)
 - `winston` (production-ready logger)
-- `jest` (unit testing)
+- `jest` (JS/TS unit testing)
 
 ### Frontend
 
 - `react`
 - `socket.io-client` (real-time WebSocket client)
-- `testing-library` (unit testing)
+- `@testing-library` (React unit testing)
