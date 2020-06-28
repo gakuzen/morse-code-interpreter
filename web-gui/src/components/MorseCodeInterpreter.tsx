@@ -2,6 +2,11 @@ import React, { useState, useEffect, useCallback } from "react";
 
 import "./MorseCodeInterpreter.css";
 import usePress, { usePressOutput } from "../hooks/usePress";
+import {
+  longPressThresholdInMs,
+  shortPressThresholdInMs,
+  idleThresholdInMs,
+} from "../constants";
 
 export interface MorseCodeInterpreterProps {
   isSocketConnected: boolean;
@@ -18,10 +23,6 @@ const MorseCodeInterpreter = (
 
   const morseInputTopic: string = "morse/input";
   const morseOutputTopic: string = "morse/output";
-
-  const longPressThresholdInMs: number = 1500;
-  const shortPressThresholdInMs: number = 1000;
-  const idleThresholdInMs: number = 1500;
 
   useEffect((): (() => void) => {
     if (socket) {

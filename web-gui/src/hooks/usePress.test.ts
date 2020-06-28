@@ -2,10 +2,9 @@ import { renderHook, act } from "@testing-library/react-hooks";
 
 import usePress, { usePressOutput } from "./usePress";
 import { sleep } from "../utils";
+import { idleThresholdInMs } from "../constants";
 
 describe("test usePress", (): void => {
-  const idleThresholdInMs: number = 1500;
-
   test("should press", async (): Promise<void> => {
     const pressDurationInMs: number = 1234;
 

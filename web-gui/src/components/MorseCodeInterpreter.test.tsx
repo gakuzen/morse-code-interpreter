@@ -6,6 +6,11 @@ import io from "socket.io-client";
 import MorseCodeInterpreter from "./MorseCodeInterpreter";
 import config from "../config";
 import { sleep } from "../utils";
+import {
+  longPressThresholdInMs,
+  shortPressThresholdInMs,
+  idleThresholdInMs,
+} from "../constants";
 
 describe("should render Morse code interpreter", (): void => {
   describe("should render statically", (): void => {
@@ -38,10 +43,6 @@ describe("should render Morse code interpreter", (): void => {
   });
 
   describe("should render dynamically", (): void => {
-    const longPressThresholdInMs: number = 1500;
-    const shortPressThresholdInMs: number = 1000;
-    const idleThresholdInMs: number = 1500;
-
     let socketIO: SocketIOClient.Socket;
     let isSocketConnected: boolean;
 
@@ -63,50 +64,55 @@ describe("should render Morse code interpreter", (): void => {
       done();
     });
 
-    it("test socket", async (): Promise<void> => {
-      expect(isSocketConnected).toBe(true);
+    const timeoutInMs = 10000;
+    it(
+      "test socket",
+      async (): Promise<void> => {
+        expect(isSocketConnected).toBe(true);
 
-      const { getByText, container } = render(
-        <MorseCodeInterpreter
-          isSocketConnected={isSocketConnected}
-          socket={socketIO}
-        />
-      );
+        const { getByText, container } = render(
+          <MorseCodeInterpreter
+            isSocketConnected={isSocketConnected}
+            socket={socketIO}
+          />
+        );
 
-      // simulate a short press
-      const shortPress = (): void =>
-        act((): void => {
-          fireEvent.mouseDown(getByText(/Morse it/i));
-          fireEvent.mouseUp(getByText(/Morse it/i));
-        });
-      // simulate a long press
-      const longPress = (): Promise<undefined> =>
-        act(
-          async (): Promise<void> => {
+        // simulate a short press
+        const shortPress = (): void =>
+          act((): void => {
             fireEvent.mouseDown(getByText(/Morse it/i));
-            await sleep(longPressThresholdInMs * 1.1);
             fireEvent.mouseUp(getByText(/Morse it/i));
-          }
-        );
-      // simulate idle
-      const idle = (): Promise<undefined> =>
-        act(
-          async (): Promise<void> => {
-            await sleep(idleThresholdInMs * 1.1);
-          }
-        );
+          });
+        // simulate a long press
+        const longPress = (): Promise<undefined> =>
+          act(
+            async (): Promise<void> => {
+              fireEvent.mouseDown(getByText(/Morse it/i));
+              await sleep(longPressThresholdInMs * 1.1);
+              fireEvent.mouseUp(getByText(/Morse it/i));
+            }
+          );
+        // simulate idle
+        const idle = (): Promise<undefined> =>
+          act(
+            async (): Promise<void> => {
+              await sleep(idleThresholdInMs * 1.1);
+            }
+          );
 
-      shortPress();
-      expect(getByText(".")).toBeInTheDocument();
+        shortPress();
+        expect(getByText(".")).toBeInTheDocument();
 
-      await idle();
-      expect(getByText("E")).toBeInTheDocument();
+        await idle();
+        expect(getByText("E")).toBeInTheDocument();
 
-      await longPress();
-      expect(getByText("-")).toBeInTheDocument();
+        await longPress();
+        expect(getByText("-")).toBeInTheDocument();
 
-      await idle();
-      expect(getByText("ET")).toBeInTheDocument();
-    }, 10000);
+        await idle();
+        expect(getByText("ET")).toBeInTheDocument();
+      },
+      timeoutInMs
+    );
   });
 });
