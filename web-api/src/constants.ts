@@ -1,3 +1,6 @@
+export const morseCodeInputTopic: string = "morse/input";
+export const morseCodeOutputTopic: string = "morse/output";
+
 export const morseCodeMap: { [code: string]: string } = {
   ".-": "A",
   "-...": "B",

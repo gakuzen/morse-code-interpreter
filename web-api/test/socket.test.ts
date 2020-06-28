@@ -1,7 +1,11 @@
 import io from "socket.io-client";
 
 import config from "../src/config";
-import { morseCodeMap } from "../src/constants";
+import {
+  morseCodeMap,
+  morseCodeInputTopic,
+  morseCodeOutputTopic,
+} from "../src/constants";
 
 describe("Socket unit tests", function () {
   let socket: SocketIOClient.Socket;
@@ -24,12 +28,9 @@ describe("Socket unit tests", function () {
   });
 
   describe("Interpret Morse code", function () {
-    const inputTopic: string = "morse/input";
-    const outputTopic: string = "morse/output";
-
     const tester = (combination: string, expected: string, done: any): void => {
-      socket.on(outputTopic, (data: string): void => {
-        socket.off(outputTopic);
+      socket.on(morseCodeOutputTopic, (data: string): void => {
+        socket.off(morseCodeOutputTopic);
 
         expect(data).toEqual(expected);
 
@@ -37,9 +38,9 @@ describe("Socket unit tests", function () {
       });
 
       for (const morseCode of Array.from(combination)) {
-        socket.emit(inputTopic, morseCode);
+        socket.emit(morseCodeInputTopic, morseCode);
       }
-      socket.emit(inputTopic, "");
+      socket.emit(morseCodeInputTopic, "");
     };
 
     Object.entries(morseCodeMap).forEach(
