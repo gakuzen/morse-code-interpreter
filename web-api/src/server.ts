@@ -14,7 +14,7 @@ const io = require("socket.io")(server);
 
 setupSocket(io);
 
-server.listen(app.get("port"), () => {
+server.listen(app.get("port"), (): void => {
   logger.info(
     `App is running at http://localhost:${app.get("port")} in ${app.get(
       "env"

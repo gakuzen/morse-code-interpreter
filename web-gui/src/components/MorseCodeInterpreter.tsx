@@ -5,53 +5,63 @@ import usePress from "../hooks/usePress";
 
 export interface MorseCodeInterpreterProps {
   isSocketConnected: boolean;
-  socket: SocketIOClient.Socket;
+  socket: SocketIOClient.Socket | null;
 }
 
-const MorseCodeInterpreter = (props: MorseCodeInterpreterProps) => {
+const MorseCodeInterpreter = (
+  props: MorseCodeInterpreterProps
+): JSX.Element => {
   const { isSocketConnected, socket } = props;
 
   const [input, setInput] = useState<string>("");
   const [interpretation, setInterpretation] = useState<string>("");
 
-  const longPressThresholdInMs = 1500;
-  const shortPressThresholdInMs = 1000;
-  const idleThresholdInMs = 1500;
+  const longPressThresholdInMs: number = 1500;
+  const shortPressThresholdInMs: number = 1000;
+  const idleThresholdInMs: number = 1500;
 
-  useEffect(() => {
-    const topic = "morse/output";
+  useEffect((): (() => void) => {
+    const topic: string = "morse/output";
 
     if (socket) {
-      socket.on(topic, (data: string) => {
+      socket.on(topic, (data: string): void => {
         setInput("");
         if (data) {
-          setInterpretation((interpretation) => interpretation + data);
+          setInterpretation(
+            (interpretation: string): string => interpretation + data
+          );
         }
       });
     }
 
-    return () => {
+    return (): void => {
       if (socket) {
         socket.off(topic);
       }
     };
   }, [socket]);
 
-  const onPressRelease = useCallback(
-    (ms: number) => {
+  const onPressRelease: (ms: number) => void = useCallback(
+    (ms: number): void => {
       if (ms > longPressThresholdInMs) {
-        setInput((input) => input + "-");
-        socket.emit("morse/input", "-");
+        setInput((input: string): string => input + "-");
+        if (socket) {
+          socket.emit("morse/input", "-");
+        }
       } else if (ms < shortPressThresholdInMs) {
-        setInput((input) => input + ".");
-        socket.emit("morse/input", ".");
+        setInput((input: string): string => input + ".");
+        if (socket) {
+          socket.emit("morse/input", ".");
+        }
       }
     },
     [socket]
   );
 
-  const onIdle = useCallback(() => {
-    socket.emit("morse/input", "");
+  const onIdle: () => void = useCallback((): void => {
+    if (socket) {
+      socket.emit("morse/input", "");
+    }
   }, [socket]);
 
   const buttonPress = usePress(onPressRelease, onIdle, idleThresholdInMs);

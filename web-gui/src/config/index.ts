@@ -1,17 +1,17 @@
 const env: string = process.env.NODE_ENV || "production";
 
-interface IConfig {
+interface Config {
   env: string;
   socketUrl: string;
   apiUrl: string;
   authApiUrl: string;
 }
 
-interface IConfigs {
-  [env: string]: IConfig;
+interface Configs {
+  [env: string]: Config;
 }
 
-const configs: IConfigs = {
+const configs: Configs = {
   development: {
     env: "development",
     socketUrl: "http://localhost:3000",

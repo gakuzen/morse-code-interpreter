@@ -1,15 +1,15 @@
 const env: string = process.env.NODE_ENV || "production";
 
-interface IConfig {
+interface Config {
   env: string;
   port: number;
 }
 
-interface IConfigs {
-  [env: string]: IConfig;
+interface Configs {
+  [env: string]: Config;
 }
 
-const configs: IConfigs = {
+const configs: Configs = {
   local: {
     env: "local",
     port: parseInt(process.env.PORT) || 3000,

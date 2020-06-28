@@ -24,11 +24,11 @@ describe("Socket unit tests", function () {
   });
 
   describe("Interpret Morse code", function () {
-    const inputTopic = "morse/input";
-    const outputTopic = "morse/output";
+    const inputTopic: string = "morse/input";
+    const outputTopic: string = "morse/output";
 
-    const tester = (combination: string, expected: string, done: any) => {
-      socket.on(outputTopic, (data: string) => {
+    const tester = (combination: string, expected: string, done: any): void => {
+      socket.on(outputTopic, (data: string): void => {
         socket.off(outputTopic);
 
         expect(data).toEqual(expected);
@@ -42,10 +42,12 @@ describe("Socket unit tests", function () {
       socket.emit(inputTopic, "");
     };
 
-    Object.entries(morseCodeMap).forEach(([comb, char]) => {
-      it(`Interpret ${comb}`, function (done) {
-        tester(comb, char, done);
-      });
-    });
+    Object.entries(morseCodeMap).forEach(
+      ([comb, char]: [string, string]): void => {
+        it(`Interpret ${comb}`, function (done) {
+          tester(comb, char, done);
+        });
+      }
+    );
   });
 });

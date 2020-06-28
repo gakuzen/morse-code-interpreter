@@ -5,24 +5,24 @@ import "./App.css";
 import MorseCodeInterpreter from "./components/MorseCodeInterpreter";
 import config from "./config";
 
-const App = () => {
-  const [isSocketConnected, setIsSocketConnected] = useState(false);
+const App = (): JSX.Element => {
+  const [isSocketConnected, setIsSocketConnected] = useState<boolean>(false);
   const [socket, setSocket] = useState<any>();
 
-  useEffect(() => {
-    const socketIO = io(config.socketUrl);
+  useEffect((): (() => void) => {
+    const socketIO: SocketIOClient.Socket = io(config.socketUrl);
 
-    socketIO.on("connect", () => {
+    socketIO.on("connect", (): void => {
       setIsSocketConnected(true);
     });
 
-    socketIO.on("disconnect", () => {
+    socketIO.on("disconnect", (): void => {
       setIsSocketConnected(false);
     });
 
     setSocket(socketIO);
 
-    return () => {
+    return (): void => {
       socketIO.disconnect();
     };
   }, []);

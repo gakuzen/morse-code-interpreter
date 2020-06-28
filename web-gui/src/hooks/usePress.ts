@@ -8,7 +8,7 @@ export default function usePress(
   const [startPress, setStartPress] = useState<boolean>(false);
   const [lastPressStart, setLastPressStart] = useState<Date>();
 
-  useEffect(() => {
+  useEffect((): (() => void) => {
     let idleTimerId: NodeJS.Timeout | undefined;
 
     if (startPress) {
@@ -22,24 +22,24 @@ export default function usePress(
 
         onPressRelease(pressedDuration);
 
-        idleTimerId = setTimeout(() => {
+        idleTimerId = setTimeout((): void => {
           onIdle();
         }, idleThresholdInMs);
       }
     }
 
-    return () => {
+    return (): void => {
       if (idleTimerId) {
         clearTimeout(idleTimerId);
       }
     };
   }, [startPress, lastPressStart, onPressRelease, onIdle, idleThresholdInMs]);
 
-  const start = useCallback(() => {
+  const start: () => void = useCallback((): void => {
     setStartPress(true);
     setLastPressStart(new Date());
   }, []);
-  const stop = useCallback(() => {
+  const stop: () => void = useCallback((): void => {
     setStartPress(false);
   }, []);
 

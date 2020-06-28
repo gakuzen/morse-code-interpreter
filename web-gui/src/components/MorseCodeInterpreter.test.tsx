@@ -7,24 +7,26 @@ import MorseCodeInterpreter from "./MorseCodeInterpreter";
 import config from "../config";
 import { sleep } from "../utils";
 
-describe("should render Morse code interpreter", () => {
-  describe("should render statically", () => {
-    it("test UI elements", () => {
+describe("should render Morse code interpreter", (): void => {
+  describe("should render statically", (): void => {
+    it("test UI elements", (): void => {
       const { getByText, rerender, queryByText } = render(
-        <MorseCodeInterpreter isSocketConnected={false} />
+        <MorseCodeInterpreter isSocketConnected={false} socket={null} />
       );
 
-      const bannerElement = getByText(/I love Morse code/i);
+      const bannerElement: HTMLElement = getByText(/I love Morse code/i);
       expect(bannerElement).toBeInTheDocument();
 
-      let buttonElement = getByText(/Morse it/i);
+      let buttonElement: HTMLElement = getByText(/Morse it/i);
       expect(buttonElement).toBeInTheDocument();
       expect(buttonElement).toHaveAttribute("disabled");
 
-      let socketErrorElement = getByText(/can not connect to backend socket/i);
+      let socketErrorElement: HTMLElement = getByText(
+        /can not connect to backend socket/i
+      );
       expect(socketErrorElement).toBeInTheDocument();
 
-      rerender(<MorseCodeInterpreter isSocketConnected={true} />);
+      rerender(<MorseCodeInterpreter isSocketConnected={true} socket={null} />);
 
       buttonElement = getByText(/Morse it/i);
       expect(buttonElement).toBeInTheDocument();
@@ -35,10 +37,10 @@ describe("should render Morse code interpreter", () => {
     });
   });
 
-  describe("should render dynamically", () => {
-    const longPressThresholdInMs = 1500;
-    const shortPressThresholdInMs = 1000;
-    const idleThresholdInMs = 1500;
+  describe("should render dynamically", (): void => {
+    const longPressThresholdInMs: number = 1500;
+    const shortPressThresholdInMs: number = 1000;
+    const idleThresholdInMs: number = 1500;
 
     let socketIO: SocketIOClient.Socket;
     let isSocketConnected: boolean;
@@ -61,7 +63,7 @@ describe("should render Morse code interpreter", () => {
       done();
     });
 
-    it("test socket", async () => {
+    it("test socket", async (): Promise<void> => {
       expect(isSocketConnected).toBe(true);
 
       const { getByText, container } = render(
@@ -72,23 +74,27 @@ describe("should render Morse code interpreter", () => {
       );
 
       // simulate a short press
-      const shortPress = () =>
-        act(() => {
+      const shortPress = (): void =>
+        act((): void => {
           fireEvent.mouseDown(getByText(/Morse it/i));
           fireEvent.mouseUp(getByText(/Morse it/i));
         });
       // simulate a long press
-      const longPress = () =>
-        act(async () => {
-          fireEvent.mouseDown(getByText(/Morse it/i));
-          await sleep(longPressThresholdInMs * 1.1);
-          fireEvent.mouseUp(getByText(/Morse it/i));
-        });
+      const longPress = (): Promise<undefined> =>
+        act(
+          async (): Promise<void> => {
+            fireEvent.mouseDown(getByText(/Morse it/i));
+            await sleep(longPressThresholdInMs * 1.1);
+            fireEvent.mouseUp(getByText(/Morse it/i));
+          }
+        );
       // simulate idle
-      const idle = () =>
-        act(async () => {
-          await sleep(idleThresholdInMs * 1.1);
-        });
+      const idle = (): Promise<undefined> =>
+        act(
+          async (): Promise<void> => {
+            await sleep(idleThresholdInMs * 1.1);
+          }
+        );
 
       shortPress();
       expect(getByText(".")).toBeInTheDocument();

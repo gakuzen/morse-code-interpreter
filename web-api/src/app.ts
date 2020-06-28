@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Express } from "express";
 import compression from "compression"; // compresses requests
 import session from "express-session";
 import bodyParser from "body-parser";
@@ -13,7 +13,7 @@ import * as homeController from "./controllers/home";
 import * as apiController from "./controllers/api";
 
 // Create Express server
-const app = express();
+const app: Express = express();
 
 // Express configuration
 app.set("port", config.port || 3000);
@@ -32,7 +32,7 @@ app.use(passport.session());
 app.use(flash());
 app.use(lusca.xframe("SAMEORIGIN"));
 app.use(lusca.xssProtection(true));
-app.use((req, res, next) => {
+app.use((req, res, next): void => {
   res.locals.user = req.user;
   next();
 });

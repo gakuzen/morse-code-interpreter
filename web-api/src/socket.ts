@@ -1,13 +1,13 @@
 import { morseCodeMap } from "./constants";
 import logger from "./util/logger";
 
-const setup = (io: SocketIO.Server) => {
-  io.on("connection", (socket: SocketIO.Socket) => {
+const setup = (io: SocketIO.Server): void => {
+  io.on("connection", (socket: SocketIO.Socket): void => {
     logger.debug(`${socket.id} connected`);
 
     let inputStream: string = "";
 
-    socket.on("morse/input", (data: string) => {
+    socket.on("morse/input", (data: string): void => {
       switch (data) {
         case "-": {
           inputStream += data;
@@ -18,7 +18,7 @@ const setup = (io: SocketIO.Server) => {
           break;
         }
         default: {
-          const morseCode = morseCodeMap[inputStream] || null;
+          const morseCode: string | null = morseCodeMap[inputStream] || null;
           socket.emit("morse/output", morseCode);
 
           inputStream = "";
@@ -26,7 +26,7 @@ const setup = (io: SocketIO.Server) => {
       }
     });
 
-    socket.on("disconnect", () => {
+    socket.on("disconnect", (): void => {
       logger.debug(`${socket.id} disconnected`);
     });
   });
