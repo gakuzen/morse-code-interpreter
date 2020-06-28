@@ -1,6 +1,6 @@
 import { renderHook, act } from "@testing-library/react-hooks";
 
-import usePress from "./usePress";
+import usePress, { usePressOutput } from "./usePress";
 import { sleep } from "../utils";
 
 describe("test usePress", (): void => {
@@ -12,17 +12,18 @@ describe("test usePress", (): void => {
     let isIdle: boolean | undefined;
     let pressedDurationInMs: number | undefined;
 
-    const { result } = renderHook(() =>
-      usePress(
-        (ms: number): void => {
-          pressedDurationInMs = ms;
-          isIdle = false;
-        },
-        (): void => {
-          isIdle = true;
-        },
-        idleThresholdInMs
-      )
+    const { result } = renderHook(
+      (): usePressOutput =>
+        usePress(
+          (ms: number): void => {
+            pressedDurationInMs = ms;
+            isIdle = false;
+          },
+          (): void => {
+            isIdle = true;
+          },
+          idleThresholdInMs
+        )
     );
 
     await act(
@@ -40,16 +41,17 @@ describe("test usePress", (): void => {
   test("should idle", async (): Promise<void> => {
     let isIdle: boolean | undefined;
 
-    const { result } = renderHook(() =>
-      usePress(
-        (ms: number): void => {
-          isIdle = false;
-        },
-        (): void => {
-          isIdle = true;
-        },
-        idleThresholdInMs
-      )
+    const { result } = renderHook(
+      (): usePressOutput =>
+        usePress(
+          (ms: number): void => {
+            isIdle = false;
+          },
+          (): void => {
+            isIdle = true;
+          },
+          idleThresholdInMs
+        )
     );
 
     act((): void => {

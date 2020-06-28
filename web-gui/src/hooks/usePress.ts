@@ -1,10 +1,16 @@
 import { useState, useEffect, useCallback } from "react";
 
+export interface usePressOutput {
+  onMouseDown: () => void;
+  onMouseUp: () => void;
+  onMouseLeave: () => void;
+}
+
 export default function usePress(
   onPressRelease: (ms: number) => void,
   onIdle: () => void,
   idleThresholdInMs: number
-) {
+): usePressOutput {
   const [startPress, setStartPress] = useState<boolean>(false);
   const [lastPressStart, setLastPressStart] = useState<Date>();
 
