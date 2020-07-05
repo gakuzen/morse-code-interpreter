@@ -22,18 +22,17 @@ describe("should render Morse code interpreter", (): void => {
       const bannerElement: HTMLElement = getByText(/I love Morse code/i);
       expect(bannerElement).toBeInTheDocument();
 
-      let buttonElement: HTMLElement = getByText(/Morse it/i);
+      const buttonElement: HTMLElement = getByText(/Morse it/i);
       expect(buttonElement).toBeInTheDocument();
       expect(buttonElement).toHaveAttribute("disabled");
 
-      let socketErrorElement: HTMLElement = getByText(
+      const socketErrorElement: HTMLElement = getByText(
         /can not connect to backend socket/i
       );
       expect(socketErrorElement).toBeInTheDocument();
 
       rerender(<MorseCodeInterpreter isSocketConnected={true} socket={null} />);
 
-      buttonElement = getByText(/Morse it/i);
       expect(buttonElement).toBeInTheDocument();
       expect(buttonElement).not.toHaveAttribute("disabled");
 
@@ -77,19 +76,21 @@ describe("should render Morse code interpreter", (): void => {
           />
         );
 
+        const morseButton = getByText(/Morse it/i);
+
         // simulate a short press
         const shortPress = (): void =>
           act((): void => {
-            fireEvent.mouseDown(getByText(/Morse it/i));
-            fireEvent.mouseUp(getByText(/Morse it/i));
+            fireEvent.mouseDown(morseButton);
+            fireEvent.mouseUp(morseButton);
           });
         // simulate a long press
         const longPress = (): Promise<undefined> =>
           act(
             async (): Promise<void> => {
-              fireEvent.mouseDown(getByText(/Morse it/i));
+              fireEvent.mouseDown(morseButton);
               await sleep(longPressThresholdInMs * 1.1);
-              fireEvent.mouseUp(getByText(/Morse it/i));
+              fireEvent.mouseUp(morseButton);
             }
           );
         // simulate idle
