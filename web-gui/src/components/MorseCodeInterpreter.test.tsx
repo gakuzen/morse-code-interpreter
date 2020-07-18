@@ -13,21 +13,25 @@ import {
 } from "../constants";
 
 describe("should render Morse code interpreter", (): void => {
+  const bannerLabel: string = "I love Morse code";
+  const morseButtonLabel: string = "Morse it";
+  const cannotConnectSocketLabel: string = "can not connect to backend socket";
+
   describe("should render statically", (): void => {
     it("test UI elements", (): void => {
       const { getByText, rerender, queryByText } = render(
         <MorseCodeInterpreter isSocketConnected={false} socket={null} />
       );
 
-      const bannerElement: HTMLElement = getByText(/I love Morse code/i);
+      const bannerElement: HTMLElement = getByText(bannerLabel);
       expect(bannerElement).toBeInTheDocument();
 
-      const buttonElement: HTMLElement = getByText(/Morse it/i);
+      const buttonElement: HTMLElement = getByText(morseButtonLabel);
       expect(buttonElement).toBeInTheDocument();
       expect(buttonElement).toHaveAttribute("disabled");
 
       const socketErrorElement: HTMLElement = getByText(
-        /can not connect to backend socket/i
+        cannotConnectSocketLabel
       );
       expect(socketErrorElement).toBeInTheDocument();
 
@@ -36,7 +40,7 @@ describe("should render Morse code interpreter", (): void => {
       expect(buttonElement).toBeInTheDocument();
       expect(buttonElement).not.toHaveAttribute("disabled");
 
-      queryByText(/can not connect to backend socket/i);
+      queryByText(cannotConnectSocketLabel);
       expect(socketErrorElement).not.toBeInTheDocument();
     });
   });
@@ -67,6 +71,7 @@ describe("should render Morse code interpreter", (): void => {
     it(
       "test socket",
       async (): Promise<void> => {
+        // TODO: test socket connection without assuming a local server socket is running
         expect(isSocketConnected).toBe(true);
 
         const { getByText, container } = render(
@@ -76,7 +81,7 @@ describe("should render Morse code interpreter", (): void => {
           />
         );
 
-        const morseButton = getByText(/Morse it/i);
+        const morseButton = getByText(morseButtonLabel);
 
         // simulate a short press
         const shortPress = (): void =>
